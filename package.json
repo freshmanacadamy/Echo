@@ -1,16 +1,12 @@
 {
   "name": "telegram-echo-bot",
   "version": "1.0.0",
-  "description": "A simple echo Telegram bot",
-  "main": "index.js",
+  "description": "Telegram bot for Vercel",
+  "main": "api/bot.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js"
+    "dev": "vercel dev"
   },
   "dependencies": {
     "node-telegram-bot-api": "^0.64.0"
-  },
-  "engines": {
-    "node": ">=16.0.0"
   }
 }
