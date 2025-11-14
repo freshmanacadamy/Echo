@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/bot.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/bot.js"
+    },
+    {
+      "src": "/",
+      "dest": "/api/bot.js"
+    },
+    {
+      "src": "/health",
+      "dest": "/api/bot.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
