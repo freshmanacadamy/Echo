@@ -2,9 +2,7 @@
   "name": "ju-marketplace-bot",
   "version": "1.0.0",
   "description": "Jimma University Marketplace Telegram Bot",
-  "main": "api/bot.js",
   "scripts": {
-    "start": "node api/bot.js",
     "dev": "node api/bot.js"
   },
   "dependencies": {
