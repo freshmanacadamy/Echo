@@ -1,15 +1,16 @@
 {
-  "name": "echo-bot",
+  "name": "telegram-echo-bot",
   "version": "1.0.0",
-  "description": "A simple echo Discord bot",
+  "description": "A simple echo Telegram bot",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node index.js"
   },
   "dependencies": {
-    "discord.js": "^14.14.1"
+    "node-telegram-bot-api": "^0.64.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=16.0.0"
   }
 }
