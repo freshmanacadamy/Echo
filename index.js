@@ -1,43 +1,58 @@
-const { Client, GatewayIntentBits, Events } = require('discord.js');
+const TelegramBot = require('node-telegram-bot-api');
 
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
-  ]
+// Get token from environment variable
+const token = process.env.TELEGRAM_BOT_TOKEN;
+
+// Create bot instance
+const bot = new TelegramBot(token, { polling: true });
+
+console.log('🤖 Telegram Echo Bot is starting...');
+
+// Handle /start command
+bot.onText(/\/start/, (msg) => {
+  const chatId = msg.chat.id;
+  const welcomeText = `👋 Hello! I'm Echo Bot!
+
+📝 I can echo your messages!
+
+Available commands:
+/start - Start the bot
+/echo - Echo your message
+/ping - Check if bot is alive
+
+Simply send me any message and I'll repeat it!`;
+
+  bot.sendMessage(chatId, welcomeText);
 });
 
-// When bot is ready
-client.once(Events.ClientReady, () => {
-  console.log(`✅ Echo Bot is online! Logged in as ${client.user.tag}`);
+// Handle /echo command
+bot.onText(/\/echo (.+)/, (msg, match) => {
+  const chatId = msg.chat.id;
+  const textToEcho = match[1];
+  
+  bot.sendMessage(chatId, `🔊 ${textToEcho}`);
 });
 
-// Echo messages
-client.on(Events.MessageCreate, message => {
-  // Ignore messages from bots
-  if (message.author.bot) return;
+// Handle /ping command
+bot.onText(/\/ping/, (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, '🏓 Pong! Bot is alive and working!');
+});
 
-  // Echo command - !echo [message]
-  if (message.content.startsWith('!echo')) {
-    const textToEcho = message.content.slice(6); // Remove "!echo "
-    
-    if (textToEcho) {
-      message.channel.send(`🔊 ${textToEcho}`);
-    } else {
-      message.channel.send('❌ Please provide text to echo! Usage: `!echo your message here`');
-    }
-  }
+// Echo any text message (not commands)
+bot.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  const messageText = msg.text;
 
-  // Reply when mentioned
-  if (message.mentions.has(client.user) && !message.content.startsWith('!')) {
-    message.channel.send('👋 Hello! I\'m Echo Bot. Use `!echo [message]` and I\'ll repeat it!');
+  // Ignore command messages
+  if (!messageText.startsWith('/')) {
+    bot.sendMessage(chatId, `🔊 You said: ${messageText}`);
   }
 });
 
 // Handle errors
-client.on('error', console.error);
-process.on('unhandledRejection', console.error);
+bot.on('error', (error) => {
+  console.log('Bot error:', error);
+});
 
-// Login with bot token from environment variable
-client.login(process.env.DISCORD_TOKEN);
+console.log('✅ Telegram Echo Bot is running!');
